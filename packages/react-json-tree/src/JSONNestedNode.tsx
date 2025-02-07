@@ -27,7 +27,7 @@ interface Entry {
 }
 
 function isRange(rangeOrEntry: Range | Entry): rangeOrEntry is Range {
-  return (rangeOrEntry as Range).to !== undefined;
+  return (rangeOrEntry as Range)?.to !== undefined;
 }
 
 function renderChildNodes(
@@ -53,7 +53,8 @@ function renderChildNodes(
     collectionLimit,
     from,
     to,
-  ).forEach((entry) => {
+  ).forEach((entry, _, array) => {
+
     if (isRange(entry)) {
       childNodes.push(
         <ItemRange
@@ -64,8 +65,11 @@ function renderChildNodes(
           renderChildNodes={renderChildNodes}
         />,
       );
+    } else if (!entry?.key) {
+      return
     } else {
       const { key, value } = entry;
+
       const isCircular = circularCache.includes(value);
 
       childNodes.push(
