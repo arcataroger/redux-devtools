@@ -37,7 +37,7 @@ function getEntries(
     };
   } else if (type === 'Array') {
     res = {
-      entries: collection
+      entries: [...collection] // Spread the original array first to properly handle empty items in a sparse array
         .slice(from, to + 1)
         .map((val: unknown, idx: number) => ({ key: idx + from, value: val })),
     };
